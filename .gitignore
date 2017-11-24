@@ -1,0 +1,4 @@
+/.htaccess
+/bower_components
+/node_modules
+/Gruntfile.js
