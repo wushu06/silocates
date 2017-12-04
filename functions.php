@@ -110,7 +110,12 @@ class tbb
 	public function enqueue_styles()
 	{
         wp_enqueue_style('fontawesome-style', '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', array(), '1.0.1');
+      //  wp_enqueue_style('font-style', 'https://use.typekit.net/kxz6ket.css', array(), '1.0.1');
+
         wp_enqueue_style('mmenu-style', THEME_DIR . '/assets/stylesheets/jquery.mmenu.css', array(), '1.0.1');
+        wp_enqueue_style('jquery.fancybox-style', THEME_DIR . '/assets/stylesheets/jquery.fancybox.css', array(), '1.0.1');
+        wp_enqueue_style('animate-style', THEME_DIR . '/assets/stylesheets/animate.css', array(), '1.0.1');
+        wp_enqueue_style('animsition.min-style', THEME_DIR . '/assets/stylesheets/animsition.min.css', array(), '1.0.1');
 		wp_enqueue_style('app-style', THEME_DIR . '/assets/stylesheets/app.css', array(), '1.0.1');
 
 
@@ -120,20 +125,13 @@ class tbb
         wp_enqueue_script('bootstrap-script', THEME_DIR . '/assets/js/bootstrap.min.js', array('jquery'), '1.0.1', false);
         wp_enqueue_script('sick-script', THEME_DIR . '/assets/js/slick.js', array('jquery'), '1.0.1', false);
         wp_enqueue_script('mmenu-script', THEME_DIR . '/assets/js/jquery.mmenu.js', array('jquery'), '1.0.1', false);
+        wp_enqueue_script('masonry-script', THEME_DIR . '/assets/js/masonry.js', array('jquery'), '1.0.1', false);
+        wp_enqueue_script('magnific-popup.min-script', THEME_DIR . '/assets/js/jquery.fancybox.min.js', array('jquery'), '1.0.1', false);
+        wp_enqueue_script('viewport-script', THEME_DIR . '/assets/js/jquery.viewportchecker.js', array('jquery'), '1.0.1', false);
+        wp_enqueue_script('animsition.min-script', THEME_DIR . '/assets/js/animsition.min.js', array('jquery'), '1.0.1', false);
         wp_enqueue_script('app-script', THEME_DIR . '/assets/js/app.js', array('jquery'), '1.0.1', false);
 
 
-
-        // Register the script
-        wp_register_script( 'my_logo', get_template_directory_uri() . 'assets/js/app.js' );
-
-        // Localize the script with new data
-        $translation = '<img src="'.get_template_directory_uri().'/assets/images/silcoates_logo.jpg"  width="245"/>';
-
-        wp_localize_script( 'my_logo', 'logo', $translation );
-
-        // Enqueued script with localized data.
-        wp_enqueue_script( 'my_logo' );
 
         // send template url to js file
         $translation_array = array( 'templateUrl' => get_stylesheet_directory_uri() );
@@ -195,4 +193,113 @@ class tbb
 // Here we go! - Mario, 2017
 new tbb;
 require_once 'wp-bootstrap-navwalker.php';
+
+
+
+function my_filters(){
+    $args = array(
+        'orderby' => 'date',
+        'order' => $_POST['date']
+    );
+
+    if( isset( $_POST['categoryfilter'] ) )
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'category',
+                'field' => 'id',
+                'terms' => $_POST['categoryfilter'],
+
+            )
+        );
+
+    $query = new WP_Query( $args );
+
+    if( $query->have_posts() ) :
+        while( $query->have_posts() ): $query->the_post();
+            ?>
+
+            <div id="response" class="block_posts_single">
+                <div class="block_posts_content">
+                    <a href="<?php the_permalink() ?>">
+                        <div class="block_posts_content_image">
+
+                            <?php echo get_the_post_thumbnail();?>
+                            <div class="block_posts_content_image_overlay">
+
+                                <span>Read the article</span>
+                            </div>
+                        </div> </a>
+                </div>
+
+                <div class="block_posts_title">
+                    <h6><?php the_date() ?></h6>
+                    <h2>
+                        <?php the_title() ?>
+                    </h2>
+                </div>
+
+
+            </div>
+            <?php
+        endwhile;
+        wp_reset_postdata();
+    else :
+        echo 'No posts found';
+    endif;
+
+    die();
+}
+
+
+add_action('wp_ajax_customfilter', 'my_filters');
+add_action('wp_ajax_nopriv_customfilter', 'my_filters');
+
+
+function load_posts_by_ajax_callback() {
+    check_ajax_referer('load_more_posts', 'security');
+    $paged = $_POST['page'];
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => '3',
+        'paged' => $paged,
+    );
+    $my_posts = new WP_Query( $args );
+    if ( $my_posts ->have_posts() ) :
+        ?>
+        <?php while ( $my_posts->have_posts() ) : $my_posts->the_post() ?>
+
+        <div id="response" class="block_posts_single">
+            <div class="block_posts_content">
+                <a href="<?php the_permalink() ?>">
+                    <div class="block_posts_content_image">
+
+                        <?php echo get_the_post_thumbnail();?>
+                        <div class="block_posts_content_image_overlay">
+
+                            <span>Read the article</span>
+                        </div>
+                    </div> </a>
+            </div>
+
+            <div class="block_posts_title">
+                <h6><?php the_date() ?></h6>
+                <h2>
+                    <?php the_title() ?>
+                </h2>
+            </div>
+
+
+        </div>
+    <?php endwhile ?>
+        <?php
+    endif;
+
+    wp_die();
+
+}
+
+add_action('wp_ajax_load_posts_by_ajax', 'load_posts_by_ajax_callback');
+add_action('wp_ajax_nopriv_load_posts_by_ajax', 'load_posts_by_ajax_callback');
+
 

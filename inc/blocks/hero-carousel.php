@@ -1,26 +1,49 @@
 <!-- hero carousel -->
-<div class="block_carousel">
+<div class="block_carousel" >
     <div class="block_container">
 
-        <div class="row ">
-            <div class="block_carousel_images">
+        <div class="hero-slider ">
+
+            <?php if( $rows = theme('gallery') ) :
+
+                //var_dump($rows);
+
+                ?>
+            <?php foreach( $rows as $i => $slide ):
+
+              //  the_row();
+            // vars
+            $image = $slide['image'];
+            $text = $slide['text'];
+
+                    $rand = mt_rand();
+            ?>
+            <div class="block_carousel_images" id="block__background--<?php echo $rand; ?>" style="height: 65vh;">
 
 
 
-                    <?php if( $images = theme( 'gallery' ) ) { ?>
-                    <?php foreach( $images as $i => $image ) { ?>
+
                 <div class="block_carousel_images_slide">
 
-                    <img src="<?php echo $image['url']; ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" width='300px' />
+                    <div class="block_carousel_images_slide_title block_small_container">
+                        <h1 class="big-font js-fadeUp "><?php echo $text; ?></h1>
+
+                    </div>
                 </div>
-                    <?php } ?>
-                    <?php } ?>
+                            <?php echo feature_bg_render( $rand, $image['sizes'] ); ?>
+
+
 
 
 
             </div>
-        </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div> <!-- slider ends -->
 
 
-    </div>  
+    </div>
 </div>
+
+<div class="clearfix"></div>

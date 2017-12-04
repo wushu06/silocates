@@ -1,3 +1,4 @@
+<!-- page -->
 <?php
 // Page 
 get_header();

@@ -3,7 +3,7 @@
     <div class="block_small_container">
 
         <div class="row ">
-            <div>
+            <div class="js-fadeUp">
                 <h1><?php echo theme('title'); ?></h1>
             </div>
             <div class="block_sec_carousel_images">

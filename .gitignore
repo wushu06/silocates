@@ -2,3 +2,5 @@
 /bower_components
 /node_modules
 /Gruntfile.js
+/wp-admin
+/wp-includes

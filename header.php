@@ -15,7 +15,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
 
 	<title>
-		<?php wp_title();?>
+		<?php wp_title().'|';?>
 	</title>
 	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/favicon.ico" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 
 </head>
 
-<body <?php body_class($class);?>>
+<body <?php body_class('');?>>
 
 	<header id="header">
         <!-- Static navbar -->
@@ -38,7 +38,7 @@
                 <div class="navbar-header">
 
 
-                    <a class="navbar-brand" href="#"><img src="<?php echo get_template_directory_uri() ; ?>/assets/images/silcoates_logo.jpg" alt="" width="270"></a>
+                    <a class="navbar-brand" href="<?php echo site_url() ?>"><img src="<?php echo get_template_directory_uri() ; ?>/assets/images/silcoates_logo.jpg" alt="" width="270"></a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
 
@@ -49,8 +49,9 @@
                             'theme_location'    => 'primary',
                             'depth'             => 3,
                             'container'         => 'div',
-                            'container_class'   => 'nav navbar-nav navbar-right',
+                            'container_class'   => 'nav navbar-nav navbar-right animsition',
                             'container_id'      => 'main-menu',
+
                             'menu_class'        => 'nav navbar-nav navbar-right',
                             'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
                             'walker'            => new wp_bootstrap_navwalker())
@@ -63,19 +64,18 @@
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
         </nav>
-        <div class="book-wrapper pull-right">
-            <a title="" href="<?php echo site_url().'/' ?>">
-                <span class="book">Book a Visit</span>
-            </a>
-        </div>
+
+
+
+
 
         <!-- mobile menu -->
         <div id="page">
 
             <div class="mh-head Sticky">
 				<span class="mh-btns-left" id="bars">
-					<span class="mh-text">Menu</span>
-					<a href="#menu" >
+					<span class="mh-text" >Menu</span>
+					<a href="#menu" data-animsition-out-class="overlay-slide-out-right">
                         <div class="click close">
                             <b></b>
                             <b></b>
@@ -109,12 +109,31 @@
 
             ?>
         </nav><!-- end mobile menu -->
+        <div class="book-wrapper pull-right">
 
+            <span class="book"><span class="pc">Book a</span> Visit</span>
+
+        </div>
 
 
 	</header>
 
 	<div class="clearfix"></div>
 
-	
- <section class="wrapper">
+
+    <section class="book-form">
+        <div >
+            <span class="close-form">Close &#10005;</span>
+            <div class="book-form_content">
+                <h3>Arrange your visit</h3>
+                <p>Simply submit your details below <br>Lorem ipsum dolor sit amet <br> consectetur adipiscing elit.</p>
+            </div>
+            <div class="book-form_form">
+                <?php  gravity_form( 2, false, false, false, '', false );?>
+            </div>
+
+
+        </div>
+    </section>
+    <div class="clearfix"></div>
+ <section class="wrapper animsition">

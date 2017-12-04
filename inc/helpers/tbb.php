@@ -83,3 +83,56 @@ function theme( $key, $child_key = false, $default = '', $post_id = false ) {
 
     return $default;
 }
+
+
+
+function feature_bg_render( $ref, $image_sizes ) {
+
+    if( ! $ref ) {
+        return '';
+    }
+
+
+    $styles =
+        '<style>
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['large'] . ');
+            }
+
+    @media (min-width:501px) {
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['medium'] . ');
+                }
+            }
+
+            @media (min-width:651px) {
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['medium'] . ');
+                    
+                }
+            }
+
+            @media (min-width:801px)  {
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['large'] . ');
+                    background-attachment: scroll;
+                   
+                }
+            }
+
+            @media (min-width:1201px) {
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['medium_large'] . ');
+                }
+            }
+            
+            @media (min-width:1601px) {
+    #block__background--' . $ref . ' {
+    background-image: url(' . $image_sizes['large'] . ');
+                }
+            }
+         </style>';
+
+    return $styles;
+
+}
